@@ -1,5 +1,7 @@
-//Mit diesem Programm können die gemessenen Winkel der Sensoren einzeln ausgegeben werden oder der resultierende (der größere der beiden) Winkel.
-//Über die Serielle Datenverbindung zu Matlab können diese Daten parallel geplottet werden.
+//Mit diesem Programm können die gemessenen Winkel der Sensoren einzeln ausgegeben
+//werden oder der resultierende (der größere der beiden) Winkel.
+//Über die Serielle Datenverbindung zu Matlab können diese Daten parallel 
+//geplottet werden.
 
 // Pinnummern entsprechend der Verbindung zum Arduino anpassen
 #define SCLK1 47
@@ -22,9 +24,9 @@
 
 
  
-//________________________________________________________________________________________________________________
+//________________________________________________________________________________
 //  globale Variablen
-//________________________________________________________________________________________________________________
+//________________________________________________________________________________
 
 //Sensordaten
 byte motion1; 
@@ -62,9 +64,9 @@ float k2 = 1;
 //Zeitmarke
 unsigned long t0;
 
-//_____________________________________________________________________________________________________________
+//________________________________________________________________________________
 //  Funktionen
-//_____________________________________________________________________________________________________________
+//________________________________________________________________________________
 
 //Byte aus der Datenleitung auslesen
 byte pullByte1() {
@@ -193,7 +195,8 @@ void writeRegister2(byte address, byte data) {
 delayMicroseconds(100); 
 }
 
-//Sensoren zurücksetzen (immer nach dem Einschalten oder dem Ändern der Auflösung zurücksetzen)
+//Sensoren zurücksetzen (immer nach dem Einschalten 
+//oder dem Ändern der Auflösung zurücksetzen)
 void reset() {
   pinMode(SCLK1, OUTPUT);
   pinMode(SDIO1, INPUT);
@@ -224,7 +227,8 @@ void reset() {
   digitalWrite(NRESET2, HIGH);
 
   
-// Entferne Kommentar um die Auflösung auf 1000cpi zu setzen; verändere zusätzlich Umrechnungsfaktor in dumpDelta()
+// Entferne Kommentar um die Auflösung auf 1000cpi zu setzen; verändere zusätzlich
+//Umrechnungsfaktor in dumpDelta()
 //  writeRegister1(0x0d, 0x01); // Sensor1
 //  writeRegister2(0x0d, 0x01); // Sensor2
 }
@@ -235,7 +239,8 @@ void dumpDelta() {
 
   pushAddress1(REG_MOTION);
   pushAddress2(REG_MOTION);
-  delayMicroseconds(4); //t_SRAD SPI Read Address Data Delay, Verzögerung für die Übergabe der Datenleitung
+  delayMicroseconds(4); //t_SRAD SPI Read Address Data Delay, Verzögerung für die 
+                        //Übergabe der Datenleitung
   motion1 = pullByte1();
   motion2 = pullByte2(); 
   delayMicroseconds(1); //t_SRR Verzögerung zwischen zwei Reads
@@ -268,13 +273,16 @@ void dumpDelta() {
   y2 = yi2/197; 
   
 
-//Wenn die Nullmarkierung erreicht ist, Korrekturfaktor berechnen und Winkel null setzen
-  if (pixelsum1 > 140 && n == 0) {  //Grenzwert von pixelsum1 variiert wenn Fahrzeug auf der Drehbühne steht, ohne Fahrzeug 140
+//Wenn die Nullmarkierung erreicht ist, 
+//Korrekturfaktor berechnen und Winkel null setzen
+  if (pixelsum1 > 140 && n == 0) {  //Grenzwert von pixelsum1 variiert, wenn 
+                             //Fahrzeug auf der Drehbühne steht; ohne Fahrzeug 140
                                                                                               
     k1 = k1*(2-(phi1/360));
     k2 = k2*(2-(phi2/360)); 
 
-    //Unrealistische Korrekturfaktoren ausschließen, z. B. im Falle des Nicht-Erkennens der Nullmarkierung; Grenzwerte sind Erfahrungswerte
+    //Unrealistische Korrekturfaktoren ausschließen, z. B. im Falle 
+    //des Nicht-Erkennens der Nullmarkierung; Grenzwerte sind Erfahrungswerte
     if (k2 < 0.8 | k2 > 1.2 | k1 < 0.8 | k1 > 1.2){
       k1 = 1;
       k2 = 1;
@@ -290,7 +298,8 @@ void dumpDelta() {
     xi2 = 0;
     yi2 = 0;
 
-    n = 1; //Merker wird beim ersten Erkennen der Nullmarkierung gesetzt, damit weiter gemessen wird, während der Sensor über der Nullmarkierung liegt.
+    n = 1; //Merker wird beim ersten Erkennen der Nullmarkierung gesetzt, 
+          //damit weiter gemessen wird, während Sensor über der Nullmarkierung liegt.
   }
 
   if (pixelsum1 < 140) {
@@ -309,9 +318,9 @@ void dumpDelta() {
  }
 }
 
-//_____________________________________________________________________________________________________________
+//________________________________________________________________________________
 //  Setup
-//_____________________________________________________________________________________________________________
+//________________________________________________________________________________
 
 void setup() {
   
@@ -325,9 +334,9 @@ void setup() {
   delay(1000); 
 }            
 
-//_____________________________________________________________________________________________________________                
+//________________________________________________________________________________                
 //LOOP
-//_____________________________________________________________________________________________________________
+//________________________________________________________________________________
 
 void loop() {
   
@@ -342,7 +351,8 @@ void loop() {
   
   dumpDelta();
 
-  //Die Reihenfolge der Daten muss mit der Reihenfolge der Auswertung in Matlab übereinstimmen
+  //Die Reihenfolge der Daten muss mit der Reihenfolge der Auswertung 
+  //in Matlab übereinstimmen
   unsigned long t1 = millis();
   Serial.println(phi1);
   Serial.println(phi2);
