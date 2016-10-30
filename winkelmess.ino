@@ -229,6 +229,7 @@ void reset() {
   
 // Entferne Kommentar um die Auflösung auf 1000cpi zu setzen; verändere zusätzlich
 //Umrechnungsfaktor in dumpDelta()
+ 
 //  writeRegister1(0x0d, 0x01); // Sensor1
 //  writeRegister2(0x0d, 0x01); // Sensor2
 }
@@ -258,7 +259,8 @@ void dumpDelta() {
   delayMicroseconds(1); 
   pushAddress1(REG_PIXEL_SUM);
   delayMicroseconds(4);
-//  pixelsum1 = readRegister1(REG_PIXEL_SUM);
+  pixelsum1 = pullByte1();
+//pixelsum1 = readRegister1(REG_PIXEL_SUM);
   
   xi1 += dx1; 
   yi1 += dy1;
@@ -276,7 +278,7 @@ void dumpDelta() {
 //Wenn die Nullmarkierung erreicht ist, 
 //Korrekturfaktor berechnen und Winkel null setzen
   if (pixelsum1 > 140 && n == 0) {  //Grenzwert von pixelsum1 variiert, wenn 
-                             //Fahrzeug auf der Drehbühne steht; ohne Fahrzeug 140
+                              //Fahrzeug auf der Drehbühne steht; ohne Fahrzeug 140
                                                                                               
     k1 = k1*(2-(phi1/360));
     k2 = k2*(2-(phi2/360)); 
@@ -335,7 +337,7 @@ void setup() {
 }            
 
 //________________________________________________________________________________                
-//LOOP
+//  LOOP
 //________________________________________________________________________________
 
 void loop() {
