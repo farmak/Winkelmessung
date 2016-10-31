@@ -1,4 +1,3 @@
-//______________________________________________________________________________
 // Mit diesem Code werden die Bewegungsdaten der Sensoren ausgelesen 
 // und ausgegeben. Zusätzlich kann damit die Verbindung zum Arudino 
 // über die ausgegebene ProductId überprüft werden. 
