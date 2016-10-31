@@ -1,5 +1,7 @@
-// Mit diesem Code werden die Bewegungsdaten der Sensoren ausgelesen und ausgegeben.
-// Zusätzlich kann damit die Verbindung zum Arudino, über die ausgegebene ProductId überprüft werden. 
+//______________________________________________________________________________
+// Mit diesem Code werden die Bewegungsdaten der Sensoren ausgelesen 
+// und ausgegeben. Zusätzlich kann damit die Verbindung zum Arudino 
+// über die ausgegebene ProductId überprüft werden. 
 // Ist diese ungleich null, hat das Auslesen des Registers funktioniert.
 
 
@@ -96,7 +98,7 @@ void reset() {
 }
 
 void dumpDelta() {
-  char motion = readRegister(REG_MOTION); // Freezes DX and DY until they are read or MOTION is read again.
+  char motion = readRegister(REG_MOTION); // Immer vor dx und dy auslesen.
   int dx = readRegister(REG_DELTA_X);
   int dy = readRegister(REG_DELTA_Y);
   byte pixelsum = readRegister(0x09);
