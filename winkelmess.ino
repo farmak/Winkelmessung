@@ -1,5 +1,5 @@
-//Mit diesem Programm können die gemessenen Winkel der Sensoren einzeln ausgegeben
-//werden oder der resultierende (der größere der beiden) Winkel.
+//Mit diesem Programm können die gemessenen Winkel der Sensoren einzeln 
+//ausgegeben werden oder der resultierende (der größere der beiden) Winkel.
 //Über die Serielle Datenverbindung zu Matlab können diese Daten parallel 
 //geplottet werden.
 
@@ -24,9 +24,9 @@
 
 
  
-//________________________________________________________________________________
+//______________________________________________________________________________
 //  globale Variablen
-//________________________________________________________________________________
+//______________________________________________________________________________
 
 //Sensordaten
 byte motion1; 
@@ -64,9 +64,9 @@ float k2 = 1;
 //Zeitmarke
 unsigned long t0;
 
-//________________________________________________________________________________
+//______________________________________________________________________________
 //  Funktionen
-//________________________________________________________________________________
+//______________________________________________________________________________
 
 //Byte aus der Datenleitung auslesen
 byte pullByte1() {
@@ -172,7 +172,7 @@ void pushByte2(byte data){
 
 //Byte in Register schreiben
 void writeRegister1(byte address, byte data) {
-  address1 |= 0x80; //MSB = 1 signalisiert, dass Register beschrieben werden soll
+  address1 |= 0x80; //MSB =1 signalisiert, dass Register beschrieben werden soll
   
   pushByte1(address);
   
@@ -227,8 +227,8 @@ void reset() {
   digitalWrite(NRESET2, HIGH);
 
   
-// Entferne Kommentar um die Auflösung auf 1000cpi zu setzen; verändere zusätzlich
-//Umrechnungsfaktor in dumpDelta()
+// Entferne Kommentar; um die Auflösung auf 1000cpi zu setzen; 
+// verändere zusätzlich den Umrechnungsfaktor in dumpDelta()
  
 //  writeRegister1(0x0d, 0x01); // Sensor1
 //  writeRegister2(0x0d, 0x01); // Sensor2
@@ -240,8 +240,8 @@ void dumpDelta() {
 
   pushAddress1(REG_MOTION);
   pushAddress2(REG_MOTION);
-  delayMicroseconds(4); //t_SRAD SPI Read Address Data Delay, Verzögerung für die 
-                        //Übergabe der Datenleitung
+  delayMicroseconds(4); //t_SRAD SPI Read Address Data Delay, Verzögerung für 
+                        //die Übergabe der Datenleitung
   motion1 = pullByte1();
   motion2 = pullByte2(); 
   delayMicroseconds(1); //t_SRR Verzögerung zwischen zwei Reads
@@ -278,7 +278,8 @@ void dumpDelta() {
 //Wenn die Nullmarkierung erreicht ist, 
 //Korrekturfaktor berechnen und Winkel null setzen
   if (pixelsum1 > 140 && n == 0) {  //Grenzwert von pixelsum1 variiert, wenn 
-                              //Fahrzeug auf der Drehbühne steht; ohne Fahrzeug 140
+                                    //Fahrzeug auf der Drehbühne steht;
+                                    //ohne Fahrzeug 140
                                                                                               
     k1 = k1*(2-(phi1/360));
     k2 = k2*(2-(phi2/360)); 
@@ -300,15 +301,15 @@ void dumpDelta() {
     xi2 = 0;
     yi2 = 0;
 
-    n = 1; //Merker wird beim ersten Erkennen der Nullmarkierung gesetzt, 
-          //damit weiter gemessen wird, während Sensor über der Nullmarkierung liegt.
+    n = 1; //Merker wird beim ersten Erkennen der Nullmarkierung gesetzt, damit
+          //weiter gemessen wird, während Sensor über der Nullmarkierung liegt.
   }
 
   if (pixelsum1 < 140) {
     n = 0; 
   }
 
-  phi1 = -(360*y1*k1)/U; //Alternativ (360*y2*(dy2/dx2))/(U*sqrt(((dy2/dx2)^2) + 1));  
+  phi1 = -(360*y1*k1)/U;   
   phi2 = -(360*y2*k2)/U;  
 
  //Der Wert des Sensors mit dem größeren Winkel, wird als Ist-Wert genommen 
@@ -320,9 +321,9 @@ void dumpDelta() {
  }
 }
 
-//________________________________________________________________________________
+//______________________________________________________________________________
 //  Setup
-//________________________________________________________________________________
+//______________________________________________________________________________
 
 void setup() {
   
@@ -337,12 +338,12 @@ void setup() {
 }            
 
 //________________________________________________________________________________                
-//  LOOP
+//  Loop
 //________________________________________________________________________________
 
 void loop() {
   
-  // Warte auf Startsignal, damit Matlab die Daten in richtiger Reihenfolge aufnimmt 
+  // Warte auf Startsignal, damit Matlab Daten in richtiger Reihenfolge aufnimmt 
   while (Serial.available() == 0); 
     
   //Startzeitpunkt festhalten
